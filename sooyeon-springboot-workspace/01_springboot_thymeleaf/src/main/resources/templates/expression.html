@@ -38,6 +38,16 @@
   </th:block>
 
   <hr>
+
+  <form th:object="${user}">
+    <input type="number" th:value="*{no}"> <br>
+    <input type="text" th:field="*{name}"> <br>
+    <textarea th:text="*{age}"></textarea>
+    <input type="text" th:field="*{registerDate}">
+  </form>
+
+
+  <hr>
   인사말 : <span th:text="#{greeting}"></span>
 
   <hr>
