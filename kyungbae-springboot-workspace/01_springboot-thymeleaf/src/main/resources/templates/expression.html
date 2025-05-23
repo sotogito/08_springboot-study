@@ -58,7 +58,10 @@
     <input type="number" th:value="*{no}"> <br>
     <input type="text" th:field="*{name}"> <!--추가적으로 id, name 필드값도 만들어줌--> <br>
     <textarea th:text="*{age}"></textarea> <br>
-    <input type="text" th:field="*{registDate}">
+    <input type="text" th:field="*{registDate}"> <br>
+    <!--날짜 포맷에 맞춰서 자동 기입-->
+    <input type="datetime-local" th:value="*{#temporals.format(registDate, 'yyyy-MM-dd HH:mm:ss')}"> <br>
+    <input type="date" th:value="*{#temporals.format(registDate, 'yyyy-MM-dd')}">
   </form>
 
   <hr>
