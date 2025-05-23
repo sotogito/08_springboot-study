@@ -7,7 +7,7 @@
     → JSP와 달리 html 확장자를 갖고 있어 JSP처럼 Servlet이 문서를 표현하는 방식이 아니기 때문에 서버 없이도 동작 가능
     → WAS를 통하지 않고도 파일을 웹 브라우저를 통해 열 수 있어 퍼블리셔와 협업이 용이
 5. HTML 문서내에 th 속성 사용을 위한 네임스페이스 추가
-   <html xmlns:th="http://www.thymeleaf.org>
+   <html xmlns:th="http://www.thymeleaf.org">
 6. 단점
    1) jsp태그 라이브러리와 custom태그들을 사용할 수 없어 기존 JSP코드를 재사용할 수 없음
    2) 기존 태그를 유지하고 속성으로 템플릿 구문을 넣는데 있어 어느정도 한계가 있고 자바스크립트나 jQuery의 도움이 필요할 수 있음
@@ -62,7 +62,7 @@
 
 
 ## 타임리프 주요 유틸리티 객체 ##
-1. #list
+1. #lists
    1) 리스트를 의미합니다.
    2) 주요 사용법
        → ${#lists.size(list)}              : 요소의 개수 반환
@@ -139,3 +139,9 @@
        → <태그 th:each="변수,rowStat:${배열/리스트}">
            ${변수}, ${rowStat.index}, ${rowStat.count}
          </태그>
+
+
+초기세팅
+1. Build,~~ -> Complier : Build project auto~
+2. AdvancesSetting -> compiler : Allow auto ~~
+3.
