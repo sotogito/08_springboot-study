@@ -44,6 +44,7 @@
     <input type="text" th:field="*{name}"> <br>
     <textarea th:text="*{age}"></textarea>
     <input type="text" th:field="*{registerDate}">
+    <input type="date" th:value="*{#temporals.format(registerDate,'yyyy-MM-dd')}">
   </form>
 
 
