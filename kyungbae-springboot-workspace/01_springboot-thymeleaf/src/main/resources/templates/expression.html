@@ -41,6 +41,7 @@
 
   <hr>
 
+
   <!-- 특정 Map의 value 값 출력 -->
   <div th:text="${forecast.weather}"></div>
   <div th:text="${forecast.temperature}"></div>
@@ -49,6 +50,16 @@
     <div th:text="*{weather}"></div>
     <div th:text="*{temperature}"></div>
   </th:block>
+
+  <hr>
+
+  <!--텍스트상자 요소의 value 출력-->
+  <form th:object="${user}">
+    <input type="number" th:value="*{no}"> <br>
+    <input type="text" th:field="*{name}"> <!--추가적으로 id, name 필드값도 만들어줌--> <br>
+    <textarea th:text="*{age}"></textarea> <br>
+    <input type="text" th:field="*{registDate}">
+  </form>
 
   <hr>
 
