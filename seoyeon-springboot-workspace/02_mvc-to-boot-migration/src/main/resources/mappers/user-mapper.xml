@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.podoseee.app.mapper.UserMapper">
+
+  <resultMap id="userResultMap" type="com.podoseee.app.dto.UserDto">
+    <id column="user_no" property="userNo" />
+    <result column="user_id" property="userId" />
+    <result column="user_pwd" property="userPwd" />
+    <result column="user_name" property="userName" />
+    <result column="email" property="email" />
+    <result column="gender" property="gender" />
+    <result column="phone" property="phone" />
+    <result column="address" property="address" />
+    <result column="profile_url" property="profileURL" />
+    <result column="signup_date" property="signupDate" />
+    <result column="modify_date" property="modifyDate" />
+    <result column="role" property="role" />
+  </resultMap>
+
+  <select id="selectUserById" resultMap="userResultMap">
+    SELECT * FROM tbl_user
+    WHERE role IN ('U', 'A')
+    AND user_id = #{userId}
+  </select>
+
+  <select id="selectUserCountById" resultType="_int">
+    SELECT COUNT(*) FROM tbl_user WHERE user_id = #{checkId}
+  </select>
+
+  <insert id="insertUser" parameterType="com.podoseee.app.dto.UserDto">
+    INSERT INTO tbl_user (
+    user_id, user_pwd, user_name, email, gender, phone, address
+    ) VALUES (
+    #{userId}, #{userPwd}, #{userName},
+    NULLIF(#{email}, ''),
+    NULLIF(#{gender}, ''),
+    NULLIF(#{phone}, ''),
+    NULLIF(#{address}, '')
+    )
+  </insert>
+
+  <update id="updateProfileImg">
+    UPDATE tbl_user
+    SET profile_url = #{profileURL}, modify_date = NOW()
+    WHERE user_id = #{userId}
+  </update>
+
+  <update id="updateUser">
+    UPDATE tbl_user
+    SET user_name = #{userName},
+    email = #{email},
+    phone = #{phone},
+    address = #{address},
+    gender = #{gender},
+    modify_date = NOW()
+    WHERE user_id = #{userId}
+  </update>
+
+  <update id="deleteUser">
+    UPDATE tbl_user
+    SET user_name = CONCAT(SUBSTR(user_name, 1, 1), RPAD('*', CHAR_LENGTH(user_name)-1, '*')),
+    email = NULL,
+    gender = NULL,
+    phone = NULL,
+    address = NULL,
+    profile_url = NULL,
+    modify_date = NOW(),
+    role = 'R'
+    WHERE user_id = #{userId}
+  </update>
+
+</mapper>
