@@ -19,14 +19,12 @@ package com.sotogito.app.controller;
 
 import com.sotogito.app.dto.UserDto;
 import com.sotogito.app.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -40,58 +38,59 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/signup.page")
-    public void signupPage(){} // 회원가입페이지 이동용
+    public void signupPage() {
+    } // 회원가입페이지 이동용
 
     @GetMapping("/myinfo.page")
-    public void myinfoPage(){} // 마이페이지 이동용
+    public void myinfoPage() {
+    } // 마이페이지 이동용
 
     @ResponseBody
     @GetMapping("/idcheck.do")
-    public String idcheck(String checkId){
+    public String idcheck(String checkId) {
         return userService.getUserCount(checkId) == 0 ? "NOTUSED" : "USED";
     }
 
     @PostMapping("/signup.do")
-    public String signup(UserDto user, RedirectAttributes redirectAttributes){
+    public String signup(@ModelAttribute UserDto user,
+                         RedirectAttributes redirectAttributes) {
+
         redirectAttributes.addFlashAttribute("message", userService.registUser(user).get("message"));
-        return "redirect:/"; // redirect라서 302응답코드
-        /*
-            Network 탭을 확인
-            - /signup.do   응답코드 302
-            - localhost    응답코드 200
-         */
+        return "redirect:/";
     }
 
     @PostMapping("/signin.do")
-    public String signin(UserDto user
-                      , RedirectAttributes redirectAttributes
-                      , HttpSession session){
+    public String signin(@ModelAttribute UserDto user,
+                         RedirectAttributes redirectAttributes,
+                         HttpSession session,
+                         HttpServletRequest request) {
 
         Map<String, Object> map = userService.loginUser(user);
         redirectAttributes.addFlashAttribute("message", map.get("message"));
 
-        if(map.get("user") != null){ // 로그인 성공일 경우
+        if (map.get("user") != null) {
             session.setAttribute("loginUser", map.get("user"));
         }
 
-        return "redirect:/"; // 응답코드 302
+        return "redirect:" + request.getHeader("referer"); ///로그인시 최근 페이지로 redirect
+        /// 검사 -> 네트워크 -> 헤더에서 Referer 확인 가능
     }
 
     @GetMapping("/signout.do")
-    public String signout(HttpSession session){
+    public String signout(HttpSession session) {
         session.invalidate();
         return "redirect:/";
     }
 
     @ResponseBody
-    @PostMapping(value="/modifyProfile.do", produces="text/html; charset=UTF-8")
-    public String modifyProfile(MultipartFile uploadFile, HttpSession session){
-        UserDto loginUser = (UserDto)session.getAttribute("loginUser");
+    @PostMapping(value = "/modifyProfile.do", produces = "text/html; charset=UTF-8")
+    public String modifyProfile(MultipartFile uploadFile, HttpSession session) {
+        UserDto loginUser = (UserDto) session.getAttribute("loginUser");
         Map<String, Object> map = userService.modifyUserProfile(loginUser.getUserId(), uploadFile);
-        if(map.get("profileURL") != null){ // 프로필변경성공
-            loginUser.setProfileURL((String)map.get("profileURL"));
+        if (map.get("profileURL") != null) { // 프로필변경성공
+            loginUser.setProfileURL((String) map.get("profileURL"));
         }
-        return (String)map.get("message");
+        return (String) map.get("message");
     }
 
 }

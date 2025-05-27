@@ -1,6 +1,7 @@
 package com.sotogito.app.dto;
 
 import lombok.*;
+import org.springframework.validation.annotation.Validated;
 
 @NoArgsConstructor
 @AllArgsConstructor
