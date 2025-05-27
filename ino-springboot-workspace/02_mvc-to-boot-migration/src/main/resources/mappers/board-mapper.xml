@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ssg.app.mapper.BoardMapper">
+<mapper namespace="com.ino.app.mapper.BoardMapper">
 
   <resultMap id="boardResultMap" type="BoardDto">
     <id column="board_no" property="boardNo"/>

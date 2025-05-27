@@ -17,6 +17,9 @@
 
       <h2 class="m-4">해당 페이지의 내용이 보여져야되는 자리</h2>
 
+      <a class="btn btn-secondary"
+         th:if="${session.loginUser != null}"
+         th:href="@{/chat/room.page}">chat room</a>
 
     </div>
 

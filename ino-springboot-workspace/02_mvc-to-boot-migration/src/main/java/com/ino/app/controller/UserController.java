@@ -2,6 +2,7 @@ package com.ino.app.controller;
 
 import com.ino.app.dto.UserDto;
 import com.ino.app.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -67,14 +68,15 @@ public class UserController {
     @PostMapping("/signin.do") // login
     public String signin(UserDto user
             , RedirectAttributes redirectAttributes
-            , HttpSession session) {
+            , HttpSession session
+            , HttpServletRequest request) {
         Map<String, Object> map = userService.loginUser(user);
         redirectAttributes.addFlashAttribute("message", map.get("message"));
         if (map.get("user") != null) {
             session.setAttribute("loginUser", map.get("user"));
         }
 
-        return "redirect:/"; // 302
+        return "redirect:" + request.getHeader("referer"); // 이전에 보던 페이지 url 재요청
     }
 
     @GetMapping("/signout.do")

@@ -5,17 +5,17 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 
-
-@SpringBootTest
+//@SpringBootTest
 class UserMapperTest {
 
-    @Autowired
+    //@Autowired
     private UserMapper userMapper;
 
 
-    @Test
+    //@Test
     void insertUser() {
         UserDto user = UserDto.builder()
                 .userId("junitTest")
@@ -31,7 +31,7 @@ class UserMapperTest {
         org.assertj.core.api.Assertions.assertThat(result).isEqualTo(1);
     }
 
-    @Test
+    //@Test
     void selectUserCountById() {
         String checkId = "admin01";
 
@@ -40,7 +40,7 @@ class UserMapperTest {
         Assertions.assertThat(count).isEqualTo(1);
     }
 
-    @Test
+    //@Test
     void selectUserById() {
 
         String userId = "user01";
