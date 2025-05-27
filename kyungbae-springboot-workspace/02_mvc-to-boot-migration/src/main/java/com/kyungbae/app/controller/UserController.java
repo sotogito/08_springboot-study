@@ -19,6 +19,7 @@ package com.kyungbae.app.controller;
 
 import com.kyungbae.app.dto.UserDto;
 import com.kyungbae.app.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -64,7 +65,8 @@ public class UserController {
     @PostMapping("/signin.do")
     public String signin(UserDto user,
                          RedirectAttributes redirectAttributes,
-                         HttpSession session){
+                         HttpSession session,
+                         HttpServletRequest request){ /*이전에 보던 page URL 찾기*/
 
         Map<String, Object> map = userService.loginUser(user);
         redirectAttributes.addFlashAttribute("message", map.get("message"));
@@ -72,8 +74,8 @@ public class UserController {
         if (map.get("user") != null) { // 로그인 성공일 경우
             session.setAttribute("loginUser", map.get("user"));
         }
-
-        return "redirect:/"; // 응답코드 302
+        System.out.println(request.getHeader("referer")); // 이전에 보던 page url
+        return "redirect:" + request.getHeader("referer"); // 응답코드 302
     }
 
     @GetMapping("/signout.do")
