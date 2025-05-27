@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:jsp="http://java.sun.com/JSP/Page">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <style>
       #profileImg{
@@ -14,7 +14,7 @@
 <div class="container p-3">
 
   <!-- Header, Nav start -->
-  <jsp:include page="/WEB-INF/views/common/header.jsp"/>
+  <th:block th:replace="~{fragment::header-nav}"></th:block>
   <!-- Header, Nav end -->
 
   <!-- Section start -->
@@ -48,7 +48,7 @@
                   let formData = new FormData();
                   formData.append('uploadFile', fileInput.files[0]);
 
-                  fetch('${contextPath}/user/modifyProfile.do', {
+                  fetch('/modifyProfile.do', {
                       method: 'POST',
                       body: formData // FormData객체 전송시 기본적으로 multipart/form-data
                   })
@@ -62,7 +62,7 @@
           })
       </script>
 
-      <form action="정보수정요청url" method="POST" id="modify_form" th:object="${session.loginUser}">
+      <form action="/modifyProfile" method="POST" id="modify_form" th:object="${session.loginUser}">
         <div class="form-group">
           <label for="userId">* ID :</label>
           <input type="text" class="form-control" id="userId" name="" th:value="*{userId}" readonly><br>
@@ -77,7 +77,7 @@
           <input type="tel" class="form-control" id="phone" name="" th:value="*{phone}"><br>
 
           <label for="address"> &nbsp; Address :</label>
-          <input type="text" class="form-control" id="address" name="" value="${loginUser.address}"><br>
+          <input type="text" class="form-control" id="address" name="" th:value="${address}"><br>
 
           <label for=""> &nbsp; Gender : </label> &nbsp;&nbsp;
           <input type="radio" name="" id="Male" value="M" th:checked="*{gender} == 'M'">
@@ -103,7 +103,7 @@
   <!-- Section end -->
 
   <!-- Footer start -->
-  <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+  <th:block th:replace="~{fragment::footer}"></th:block>  <!-- footer-nav -> footer -->
   <!-- Footer end -->
 
 </div>
