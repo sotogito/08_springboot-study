@@ -1,4 +1,4 @@
-package com.kyungbae.app.util;
+package com.kyungbae.async.util;
 
 import org.springframework.stereotype.Component;
 
