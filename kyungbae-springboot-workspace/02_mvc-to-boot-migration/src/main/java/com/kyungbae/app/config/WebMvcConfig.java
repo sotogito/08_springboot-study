@@ -1,9 +1,13 @@
 package com.kyungbae.app.config;
 
+import com.kyungbae.app.interceptor.SigninCheckInterceptor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+@RequiredArgsConstructor
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
@@ -16,11 +20,25 @@ public class WebMvcConfig implements WebMvcConfigurer {
         등
      */
 
+    private final SigninCheckInterceptor signinCheckInterceptor;
+
     // 리소스 핸들링
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         //   <mvc:resources mapping="/upload/**" location="file:///upload/"/>
         registry.addResourceHandler("/upload/**")
                 .addResourceLocations("file:///upload/");
+    }
+
+    /**
+     * interceptor 등록
+     *
+     * @param registry
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(signinCheckInterceptor)
+                .addPathPatterns("/user/myinfo.page")
+                .addPathPatterns("/board/regist.page");
     }
 }

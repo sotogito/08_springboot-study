@@ -74,7 +74,7 @@ public class UserController {
         if (map.get("user") != null) { // 로그인 성공일 경우
             session.setAttribute("loginUser", map.get("user"));
         }
-        System.out.println(request.getHeader("referer")); // 이전에 보던 page url
+//        System.out.println(request.getHeader("referer")); // 이전에 보던 page url
         return "redirect:" + request.getHeader("referer"); // 응답코드 302
     }
 
