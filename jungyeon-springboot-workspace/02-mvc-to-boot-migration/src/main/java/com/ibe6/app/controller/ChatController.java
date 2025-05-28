@@ -8,5 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class ChatController {
     @GetMapping("/room.page")
-    public void chatRoomPage(){}
+    public void chatRoomPage(){
+    }
 }
