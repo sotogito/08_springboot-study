@@ -95,7 +95,7 @@
       // 메세지 전송시 실행되는 함수 (나 => 웹소켓)
       function sendMessage(){
           const $messageInput = document.getElementById('message');  // textarea 요소
-          sock.send($messageInput.value); // * 웹소켓으로 메세지 전달 (ChatExhoHandler의 handleMessage 메소드 실행됨)
+          sock.send($messageInput.value); // * 웹소켓으로 메세지 전달 (ChatEchoHandler의 handleMessage 메소드 실행됨)
           $messageInput.value = '';
       }
 
