@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Title</title>
+</head>
+<body>
+<div class="container p-3">
+
+  <!-- Header, Nav start -->
+  <th:block th:replace="~{fragment::header-nav}"></th:block>
+  <!-- Header, Nav end -->
+
+  <!-- Section start -->
+  <section class="row m-3" style="min-height: 500px">
+
+    <div class="container border p-5 m-4 rounded">
+
+      <h2 class="m-4">해당 페이지의 내용이 보여져야되는 자리</h2>
+
+    </div>
+
+  </section>
+  <!-- Section end -->
+
+  <!-- Footer start -->
+  <th:block th:replace="~{fragment::footer}"></th:block>  <!-- footer-nav -> footer -->
+  <!-- Footer end -->
+
+</div>
+</body>
+</html>
+
+<form th:action="@{/user/signin.do}" method="POST">
+  <!-- Modal Body -->
+  <div class="modal-body">
+    <label for="userId" class="mr-sm-2">ID :</label>
+    <input type="text" class="form-control mb-2 mr-sm-2" placeholder="Enter ID" id="userId" name="userId" /> <br>
+    <label for="userPwd" class="mr-sm-2">Password:</label>
+    <input type="password" class="form-control mb-2 mr-sm-2" placeholder="Enter password" id="userPwd" name="userPwd" />
+  </div>
+
+  <!-- Modal footer -->
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary">로그인</button>
+    <button type="button" class="btn btn-danger" data-dismiss="modal">취소</button>
+  </div>
+</form>
+
