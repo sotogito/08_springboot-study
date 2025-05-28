@@ -43,7 +43,10 @@ public class UserController {
     public void signupPage(){} // 회원가입페이지 이동용
 
     @GetMapping("/myinfo.page")
-    public void myinfoPage(){} // 마이페이지 이동용
+    public void myinfoPage(){
+    // 로그인 여부 체크 필요
+
+    } // 마이페이지 이동용
 
     @ResponseBody
     @GetMapping("/idcheck.do")
