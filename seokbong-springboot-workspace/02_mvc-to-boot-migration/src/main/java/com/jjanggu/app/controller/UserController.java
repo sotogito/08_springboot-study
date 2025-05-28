@@ -14,11 +14,12 @@ package com.jjanggu.app.controller;
     - 마이페이지요청     : GET  /user/myinfo.page
     - 프로필변경요청     : POST /user/modifyProfile.do - param(uploadFile=첨부파일)
     - 정보수정요청       : POST /user/modify.do - param(폼입력값들)
-    - 회원탈퇴요처       : POST /user/resign.do - param(userPwd=검증을위한비번)
+    - 회원탈퇴요청       : POST /user/resign.do - param(userPwd=검증을위한비번)
  */
 
 import com.jjanggu.app.dto.UserDto;
 import com.jjanggu.app.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -39,10 +40,10 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/signup.page")
-    public void signupPage(){}
+    public void signupPage(){} // 회원가입페이지 이동용
 
-    @GetMapping ("/myinfo.page")
-    public  void myinfoPage(){}
+    @GetMapping("/myinfo.page")
+    public void myinfoPage(){} // 마이페이지 이동용
 
     @ResponseBody
     @GetMapping("/idcheck.do")
@@ -52,19 +53,20 @@ public class UserController {
 
     @PostMapping("/signup.do")
     public String signup(UserDto user, RedirectAttributes redirectAttributes){
-        redirectAttributes.addFlashAttribute("message", userService.registUser(user));
-        return "redirect:/"; // redirect라서 302 응답코드
+        redirectAttributes.addFlashAttribute("message", userService.registUser(user).get("message"));
+        return "redirect:/"; // redirect라서 302응답코드
         /*
-            NetWork 탭을 확인
-            - /signup.do  응답코드 200
-            - localhost   응답코드 200
+            Network 탭을 확인
+            - /signup.do   응답코드 302
+            - localhost    응답코드 200
          */
     }
 
     @PostMapping("/signin.do")
     public String signin(UserDto user
-                       , RedirectAttributes redirectAttributes
-                       , HttpSession session){
+            , RedirectAttributes redirectAttributes
+            , HttpSession session
+            , HttpServletRequest request){
 
         Map<String, Object> map = userService.loginUser(user);
         redirectAttributes.addFlashAttribute("message", map.get("message"));
@@ -73,7 +75,7 @@ public class UserController {
             session.setAttribute("loginUser", map.get("user"));
         }
 
-        return "redirect:/"; // 응답코드 302
+        return "redirect:" + request.getHeader("referer");  // 이전에 보던 페이지의 url 재요청
     }
 
     @GetMapping("/signout.do")
@@ -83,7 +85,7 @@ public class UserController {
     }
 
     @ResponseBody
-    @PostMapping(value = "/modifyProfile.do", produces = "text/html; charset=UTF-8")
+    @PostMapping(value="/modifyProfile.do", produces="text/html; charset=UTF-8")
     public String modifyProfile(MultipartFile uploadFile, HttpSession session){
         UserDto loginUser = (UserDto)session.getAttribute("loginUser");
         Map<String, Object> map = userService.modifyUserProfile(loginUser.getUserId(), uploadFile);

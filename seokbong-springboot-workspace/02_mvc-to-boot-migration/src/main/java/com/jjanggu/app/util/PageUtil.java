@@ -21,15 +21,6 @@ public class PageUtil {
         int totalPage = (int)Math.ceil((double)totalCount / display);
         int beginPage = (page - 1) / pagePerBlock * pagePerBlock + 1;
         int endPage = Math.min(beginPage + pagePerBlock -1, totalPage);
-
-        /*
-            4. offset : 요청 페이지에 필요한 게시글 조회시 limit 절에 제시할 숫자 (조회를 시작할 행수(인)
-                → page, display 통해 연산
-
-                page display                            offset
-                  1     10     0번 ~ 9번 (10개) 조회      0
-                  2     10    10번 ~ 19번(10개) 조회     10
-         */
         int offset = (page -1) * display;
 
         Map<String, Object> map = new HashMap<>();
@@ -43,5 +34,6 @@ public class PageUtil {
         map.put("offset", offset);
 
         return map;
+
     }
 }
