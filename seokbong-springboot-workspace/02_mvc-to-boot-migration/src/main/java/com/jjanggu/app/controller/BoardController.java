@@ -49,7 +49,9 @@ public class BoardController {
     }
 
     @GetMapping("/regist.page")
-    public void boardRegistPage(){}
+    public void boardRegistPage(){
+        // 로그인 여부 체크 필요
+    }
 
     @PostMapping("/regist.do")
     public String boardRegist(BoardDto board, HttpSession session
