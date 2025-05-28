@@ -43,6 +43,7 @@ public class UserController {
 
     @GetMapping("/myinfo.page")
     public void myinfoPage() {
+        /// 로그인 여부 체크 필요
     } // 마이페이지 이동용
 
     @ResponseBody
