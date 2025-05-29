@@ -20,7 +20,7 @@ public class BoardController1 {
     private final BoardService boardService;
 
     @ResponseBody
-    @GetMapping(value = "/list", produces = "application/json") // produces : 응답본문(body)에 담은 데이터의 유형
+    @GetMapping(value = "/list", produces = "application/json") // produces : 응답본문(body)에 담은 데이터의 유형 // 자바에서는 기본적으로 지정을 해주지만 개발환경이 바뀔 경우도 있기때문에 지정해주는 것이 좋다
     public Map<String, Object> list(int page){
         return boardService.getBoardsAndPaging(page); //Java(Map객체) => JSON문자열 {totalCount, beginPage, ..., boards}
     }
