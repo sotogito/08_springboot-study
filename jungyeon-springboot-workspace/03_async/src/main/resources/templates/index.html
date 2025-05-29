@@ -52,10 +52,12 @@
         document.querySelector('#board_list tbody').innerHTML = trEl;
 
         // 페이징바 화면에 출력
-        let buttonEl = `<button onclick="getBoardsAndPaging(${data.page - 1});" ${data.page == 1 ? 'disabled' : ''}> < </button>`;
+        let buttonEl = `<button onclick="getBoardsAndPaging(${data.page - 1});" ${data.page == 1 ? 'disabled' : ''}> < </button>`
+
         for(let p=data.beginPage; p<=data.endPage; p++){
           buttonEl +=  `<button onclick="getBoardsAndPaging(${p});">${p}</button>`;
         }
+
         buttonEl += `<button onclick="getBoardsAndPaging(${data.page + 1});" ${data.page == data.totalPage ? 'disabled' : ''}> > </button>`
 
         document.getElementById('paging_area').innerHTML = buttonEl;
