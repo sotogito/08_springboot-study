@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:jsp="http://java.sun.com/JSP/Page">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
+  <meta charset="UTF-8">
+  <title>Title</title>
   <style>
-      #profileImg{
-          width:250px;
-          height:250px;
-          border:1px solid lightgray;
-          border-radius: 50%;
-      }
+    #profileImg{
+      width:250px;
+      height:250px;
+      border:1px solid lightgray;
+      border-radius: 50%;
+    }
   </style>
 </head>
 <body>
+
 <div class="container p-3">
 
   <!-- Header, Nav start -->
-  <jsp:include page="/WEB-INF/views/common/header.jsp"/>
+  <th:block th:replace="~{fragment::header-nav}"></th:block>
   <!-- Header, Nav end -->
 
   <!-- Section start -->
@@ -27,39 +30,39 @@
       <div align="center">
         <img id="profileImg"
              th:src="@{${#strings.defaultString(session.loginUser.profileURL, '/images/defaultProfile.png')}}"
-             onclick="document.getElementById('profileImgFile').click();">
+        onclick="document.getElementById('profileImgFile').click();">
         <input type="file" class="file" id="profileImgFile" style="display:none;">
       </div>
 
       <script>
-          document.getElementById('profileImgFile').addEventListener('change', evt => {
+        document.getElementById('profileImgFile').addEventListener('change', evt => {
 
-              const fileInput = evt.target;    // input type=file 요소객체
+          const fileInput = evt.target;  // input type=file 요소객체
 
-              /*
-              fileInput.files : FileList 객체 [File, File, ..]
-              fileInput.files.length : 선택된 파일의 개수
-              fileInput.files.[0]: 선택된 첫 번재 파일 객체
-              */
+          /*
+            fileInput.files : FileList 객체 [File, File, ...]
+            fileInput.files.length : 선택된 파일의 개수
+            fileInput.files[0] : 선택된 첫번째 파일 객체
+           */
+          if(fileInput.files.length != 0){
 
-              if(fileInput.files.length != 0){
+            // 전송할 파일 => FormData 객체 담기
+            let formData = new FormData();
+            formData.append('uploadFile', fileInput.files[0]);
 
-                  // 전송할 파일 => FormData 객체 담기
-                  let formData = new FormData();
-                  formData.append('uploadFile', fileInput.files[0]);
+            fetch('/user/modifyProfile.do', {
+              method: 'POST',
+              body: formData // Format객체 전송시 기본적으로 multipart
+            })
+              .then(response => response.text())
+              .then(data => {
+                alert(data); // 응답메시지
+                location.reload();
+              })
 
-                  fetch('${contextPath}/user/modifyProfile.do', {
-                      method: 'POST',
-                      body: formData // FormData객체 전송시 기본적으로 multipart/form-data
-                  })
-                      .then(response => response.text())
-                      .then(data => {
-                          alert(data); // 응답메세지
-                          location.reload();
-                      })
-              }
+          }
 
-          })
+        })
       </script>
 
       <form action="정보수정요청url" method="POST" id="modify_form" th:object="${session.loginUser}">
@@ -77,7 +80,7 @@
           <input type="tel" class="form-control" id="phone" name="" th:value="*{phone}"><br>
 
           <label for="address"> &nbsp; Address :</label>
-          <input type="text" class="form-control" id="address" name="" value="${loginUser.address}"><br>
+          <input type="text" class="form-control" id="address" name="" th:value="*{address}"><br>
 
           <label for=""> &nbsp; Gender : </label> &nbsp;&nbsp;
           <input type="radio" name="" id="Male" value="M" th:checked="*{gender} == 'M'">
@@ -86,7 +89,7 @@
           <label for="Female">여자</label><br>
 
           <script>
-              document.querySelector('#modify_form input[value=${loginUser.gender}]').checked = true;
+            document.querySelector('#modify_form input[value=${loginUser.gender}]').checked = true;
           </script>
 
         </div>
@@ -103,10 +106,11 @@
   <!-- Section end -->
 
   <!-- Footer start -->
-  <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+  <th:block th:replace="~{fragment::footer-nav}"></th:block>
   <!-- Footer end -->
-
 </div>
+
+
 
 <!-- 회원탈퇴 버튼 클릭시 보여질 Modal -->
 <div class="modal" id="deleteForm">
@@ -139,5 +143,6 @@
     </div>
   </div>
 </div>
+
 </body>
 </html>
