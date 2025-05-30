@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @RequestMapping("/valid")
 @RestController
@@ -105,42 +106,77 @@ public class ValidationRestController {
         return ResponseEntity.created(URI.create("/valid/users/" + userNo)).build();
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ResponseErrorMessage> handleUserNotFound(UserNotFoundException e) {
-        ResponseErrorMessage responseErrorMessage = ResponseErrorMessage.builder()
-                .code("00")
-                .message("회원조회 실패")
-                .describe(e.getMessage())
-                .build();
-        return new ResponseEntity<>(responseErrorMessage, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)  // dto에 설정한 유효성 검사를 통과하지 못한 경우
-    public ResponseEntity<ResponseErrorMessage> handleValidationException(MethodArgumentNotValidException e) {
-        String code = null;
-        String message = null;
-        String describe = null;
-
-        BindingResult bindingResult = e.getBindingResult();
-        switch (bindingResult.getFieldError().getCode()) {
-            case "NotNull", "NotBlank":
-                code = "01";
-                message = "필수 입력 값 누락 또는 공백 입력";
-                break;
-            case "Size":
-                code = "02";
-                message = "입력 가능한 크기를 벗어난 값 입력";
-                break;
+    @DeleteMapping("/users/{userNo}")
+    public ResponseEntity<ResponseMessage> deleteUser(@PathVariable int userNo
+            , @Validated @RequestBody UserDto updateInfo) {
+        // 서비스 ----------------
+        UserDto foundedUser = null;
+        for(UserDto user : users) {
+            if (user.getNo() == userNo) {
+                foundedUser = user;
+            }
+        }
+        if (foundedUser == null) {
+            throw new UserNotFoundException("회원 정보를 찾을 수 없습니다.");
         }
 
-        describe = bindingResult.getFieldError().getDefaultMessage();
+        users.remove(foundedUser);
 
-        return ResponseEntity
-                .badRequest()
-                .body(ResponseErrorMessage.builder()
-                        .code(code)
-                        .message(message)
-                        .describe(describe)
-                        .build());
+        // -----------
+
+        return ResponseEntity.noContent().build();
     }
+
+//    @ExceptionHandler(UserNotFoundException.class)
+//    public ResponseEntity<ResponseErrorMessage> handleUserNotFound(UserNotFoundException e) {
+//        ResponseErrorMessage responseErrorMessage = ResponseErrorMessage.builder()
+//                .code("00")
+//                .message("회원조회 실패")
+//                .describe(e.getMessage())
+//                .build();
+//        return new ResponseEntity<>(responseErrorMessage, HttpStatus.NOT_FOUND);
+//    }
+//
+//    @ExceptionHandler(MethodArgumentNotValidException.class)  // dto에 설정한 유효성 검사를 통과하지 못한 경우
+//    public ResponseEntity<ResponseErrorMessage> handleValidationException(MethodArgumentNotValidException e) {
+//        String code = null;
+//        String message = null;
+//        String describe = null;
+//
+//        BindingResult bindingResult = e.getBindingResult();
+//        switch (bindingResult.getFieldError().getCode()) {
+//            case "NotNull", "NotBlank":
+//                code = "01";
+//                message = "필수 입력 값 누락 또는 공백 입력";
+//                break;
+//            case "Size":
+//                code = "02";
+//                message = "입력 가능한 크기를 벗어난 값 입력";
+//                break;
+//        }
+//
+//        describe = bindingResult.getFieldError().getDefaultMessage();
+//
+//        return ResponseEntity
+//                .badRequest()
+//                .body(ResponseErrorMessage.builder()
+//                        .code(code)
+//                        .message(message)
+//                        .describe(describe)
+//                        .build());
+//    }
+//
+//    @ExceptionHandler(MethodArgumentTypeMismatchException.class) // 경로 변수의 타입 불일치시 발생되는 예외
+//    public ResponseEntity<ResponseErrorMessage> handlePathVariableException(MethodArgumentTypeMismatchException e) {
+//
+//        return ResponseEntity
+//                .badRequest()
+//                .body(ResponseErrorMessage.builder()
+//                                .code("03")
+//                                .message("경로 변수 오류")
+//                                .describe(e.getMessage())
+//                                .build());
+//    }
+
+
 }
