@@ -1,5 +1,6 @@
 package com.sotogito.rest.section02.responseEntity;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import org.apache.coyote.ErrorState;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.*;
 
+@Hidden
 @RequestMapping("/entity")
 @RestController
 public class ResponseEntityRestController {

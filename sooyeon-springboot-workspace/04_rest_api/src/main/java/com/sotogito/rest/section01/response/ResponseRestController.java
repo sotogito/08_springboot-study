@@ -1,5 +1,6 @@
 package com.sotogito.rest.section01.response;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import java.util.Map;
  * 2. 클래스 레벨에 작성
  * 3. 해당 클래스 내의 모든 핸들러메서드에 @Responsebody이 적용
  */
+@Hidden
 @RequestMapping("/response")
 //@Controller
 @RestController
