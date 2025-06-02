@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <ul th:fragment="menu"> <!-- nav내부의 menu조각 -->
+    <li><a href="@{/}"></a>메인</li>
+    <li><a href="@{/expression}"></a>타임리프 주요 표현식</li>
+    <li><a href="@{/javascript}"></a>타임리프 js활용</li>
+    <li><a href="@{/utility}"></a>타임리프 유틸 객체 확용</li>
+    <li><a href="@{/control}"></a>타임리프 제어문</li>
+  </ul>
+
+</body>
+</html>
